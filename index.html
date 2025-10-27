@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Balatro Tracker - UI (Subtelny Bounce)</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <link rel="stylesheet" href="index-files/index.css">
+
+</head>
+<body>
+
+    <div id="splash-container">
+        <video id="plasma-video" autoplay loop muted playsinline>
+            <source src="assets/plasma-bg.mp4" type="video/mp4">
+            Your browser does not obsługuje tagu wideo.
+        </video>
+        
+        <img src="assets/giant_jimbo.png" alt="Giant Jimbo" id="splash-jimbo"> 
+
+        <div id="jimbo-text">
+            <img src="assets/jimbotxt1.png" alt="Click me and I promise I will never laugh at you again." id="jimbotxt1">
+            <img src="assets/jimbotxt2.png" alt="Click me and I promise I will never laugh at you again. (Hover)" id="jimbotxt2">
+        </div>
+    </div>
+
+    <div id="crt-overlay"></div>
+
+    <div class="main-screen">
+        
+        <header class="main-header">
+            <img src="assets/logo.png" alt="Balatro Tracker Logo" class="app-logo">
+            <span class="version-tag">1.0 Alpha</span>
+        </header>
+
+        <main class="card-grid">
+            
+            <div class="main-card-wrapper" data-card-type="placeholder-1">
+                <div class="card-layer card-layer-base"></div>
+                <div class="card-layer card-layer-top"></div>
+            </div>
+            
+            <div class="main-card-wrapper" data-card-type="placeholder-2">
+                <div class="card-layer card-layer-base"></div>
+                <div class="card-layer card-layer-top"></div>
+            </div>
+            
+            <div class="main-card-wrapper" id="import-card-wrapper" data-card-type="import">
+                <div class="card-layer card-layer-base"></div>
+                <div class="card-layer card-layer-top" id="import-asset"></div>
+            </div>
+            
+            <div class="main-card-wrapper" data-card-type="placeholder-3">
+                <div class="card-layer card-layer-base"></div>
+                <div class="card-layer card-layer-top"></div>
+            </div>
+
+        </main>
+
+        <textarea id="jsonInput" style="display: none;"></textarea>
+
+        <footer class="info-footer">
+            Also visit: 
+            <a href="#">Wiki</a> | 
+            <a href="#">Joker Template</a> | 
+            <a href="#">Save Editor</a> | 
+            <a href="#">Reddit</a> | 
+            <a href="#">Discord</a> | 
+            <a href="#">Steam</a>
+        </footer>
+    </div>
+
+    <input type="file" id="hidden-save-importer" accept=".json" style="display: none;">
+    
+    <script src="index-files/scripts/index.js"></script>
+
+</body>
+</html>
