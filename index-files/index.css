@@ -1,0 +1,281 @@
+/* --------------------------------------------------------------------------------
+   BALATRO TRACKER UI - GLOBAL STYLES & SPLASH SCREEN
+   -------------------------------------------------------------------------------- */
+
+/* --- 1. IMPORT CZCIONKI --- */
+@font-face {
+    font-family: 'BalatroFont';
+    src: url('../balatro.otf') format('opentype'); 
+}
+
+/* --- 2. ZMIENNE CSS --- */
+:root {
+    --color-text: #e0e0e0;
+    --color-link: #cccccc;
+    --color-shadow: #111111;
+    --app-width: 900px;
+}
+
+/* 🔥 ANIMACJA PODBICIA JIMBO NA HOVERZE 🔥 */
+@keyframes bounce {
+    0%, 100% { transform: translate(-50%, -50%) scale(0.5); }
+    50% { transform: translate(-50%, -55%) scale(0.53); } 
+}
+
+/* 🔥 KLUCZOWE: BLOKADA SCROLLOWANIA 🔥 */
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; 
+}
+
+/* --- 3. STYL SZKIELETU UI --- */
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; 
+    width: 100%;
+    
+    background-image: url('../assets/balatro-bg-gray.png'); 
+    background-size: cover; 
+    background-attachment: fixed; 
+    background-position: center center; 
+    background-color: #333; 
+    
+    font-family: 'BalatroFont', sans-serif;
+    color: var(--color-text);
+    image-rendering: pixelated; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    perspective: 1500px; /* Perspektywa dla efektów 3D */
+    justify-content: center;
+}
+
+/* 🔥 KONTENER WIDEO PLAZMY (SPLASH SCREEN) 🔥 */
+#splash-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; 
+    z-index: 9999; 
+    opacity: 1;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease-out; 
+    
+    /* 🔥 NOWY EFEKT FISH EYE / TV 🔥 */
+    /* Lekkie powiększenie i zniekształcenie (barrel distortion) */
+    transform: scale(1.05) perspective(1500px) rotateX(0deg); 
+    /* Dodajemy lekkie podbicie kolorów jak w starym TV */
+    filter: saturate(1.1) brightness(0.95); 
+}
+
+#plasma-video {
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    object-fit: cover; 
+    filter: brightness(0.6) blur(0px); 
+    pointer-events: none; /* KLUCZOWE: Nie blokuje Jimbo */
+}
+
+/* 🔥 STYL DLA JIMBO (GÓRNA POZYCJA) 🔥 */
+#splash-jimbo {
+    position: absolute;
+    top: 40%; 
+    left: 50%;
+    /* Jimbo dziedziczy scale(1.05) z #splash-container, więc musimy to skompensować */
+    transform: translate(-50%, -50%) scale(0.4); 
+    z-index: 10001; 
+    width: auto; 
+    height: auto; 
+    max-width: 90%; 
+    image-rendering: pixelated; 
+    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.7)); 
+    cursor: pointer; 
+    pointer-events: auto;
+    transition: transform 0.2s ease-out, filter 0.2s ease-out; 
+    
+    transform-style: preserve-3d; /* WŁĄCZENIE 3D TILT */
+}
+
+/* EFEKTY HOVER (powiększenie i ruch) */
+#splash-jimbo:hover {
+    filter: drop-shadow(6px 6px 0px rgba(0, 0, 0, 0.9));
+    animation: bounce 0.4s ease-in-out infinite alternate; 
+    transform: translate(-50%, -50%) scale(0.43); 
+}
+
+/* 🔥 STYLY DLA DYMKU DIALOGOWEGO (DOLNA POZYCJA) 🔥 */
+#jimbo-text {
+    position: absolute;
+    top: 70%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    z-index: 10002; /* Najwyższa warstwa */
+    width: 450px; 
+    height: auto;
+    visibility: visible; 
+    opacity: 1;
+    cursor: default; 
+    transition: opacity 2s ease-out; 
+}
+
+/* Obrazy w dymku są zawsze skalowane i ukryte */
+#jimbo-text img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: opacity 0.3s ease-in-out; 
+}
+
+/* Stan początkowy dla migania */
+#jimbo-text #jimbotxt1 { opacity: 1; position: absolute; top: 0; left: 0; }
+#jimbo-text #jimbotxt2 { opacity: 0; position: absolute; top: 0; left: 0; }
+
+
+/* --------------------------------------------------------------------------------
+   NAKŁADKA CRT (Działa tylko, jeśli jest poza #splash-container w HTML)
+   -------------------------------------------------------------------------------- */
+
+#crt-overlay {
+    position: fixed; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000; 
+    pointer-events: none;
+}
+
+/* 1. LINIIE SKANUJĄCE (Scanlines) */
+#crt-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Wymuszamy widoczność: ciemniejsze i szersze linie */
+    background: repeating-linear-gradient(
+        to bottom, 
+        rgba(18, 16, 16, 0.5) 0px, 
+        rgba(18, 16, 16, 0.6) 1px, 
+        transparent 1px, 
+        transparent 3px 
+    );
+    opacity: 0.8; 
+    pointer-events: none;
+}
+
+/* 2. EFEKT ZAOKRĄGLENIA/SZUMU KINESKOPU */
+#crt-overlay::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    box-shadow: 
+        inset 0 0 100px rgba(0, 0, 0, 0.4), 
+        inset 0 0 10px rgba(255, 255, 255, 0.1); 
+    
+    /* 🔥 USUŃMY TEN EFEKT, BO KOLIDUJE Z FISH EYE NA #splash-container
+       transform: perspective(1000px) rotateX(0deg) scale(1.02); 
+    */
+    
+    pointer-events: none;
+}
+
+
+/* --------------------------------------------------------------------------------
+   GŁÓWNY EKRAN (MAIN SCREEN)
+   -------------------------------------------------------------------------------- */
+
+.main-screen {
+    width: 100%;
+    max-width: var(--app-width);
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    visibility: hidden; 
+    height: 100vh; 
+    overflow-y: auto; 
+    overflow-x: hidden;
+}
+.info-footer { 
+    position: static; 
+    flex-shrink: 0; 
+    margin-top: 20px;
+    padding-bottom: 20px;
+    font-size: 0.8em; color: #999; text-shadow: 1px 1px 0 var(--color-shadow); text-align: center; width: 100%; max-width: 800px; 
+}
+.info-footer a { color: var(--color-link); text-decoration: none; margin: 0 5px; text-transform: uppercase; }
+.info-footer a:hover { color: var(--color-text); }
+
+
+/* --- RESZTA STYLÓW DLA UI (Tilt) --- */
+.main-header { position: relative; text-align: center; margin-bottom: 50px; width: 100%; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+.app-logo { 
+    width: 550px; height: auto; image-rendering: pixelated; 
+    filter: drop-shadow(4px 4px 0px rgba(0, 0, 0, 0.7)) drop-shadow(-4px -4px 0px rgba(0, 0, 0, 0.7)); 
+    transform-style: preserve-3d;
+    transform: translateZ(0); 
+    transition: transform 0.3s ease-out;
+}
+.version-tag { font-size: 1.2em; color: #ccc; position: absolute; top: 95%; left: 50%; transform: translate(180px, -100%); text-shadow: 1px 1px 0 var(--color-shadow); z-index: 20; }
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    width: 100%;
+    max-width: 800px; 
+    margin: 40px 0;
+}
+.main-card-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 150%; 
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+    z-index: 10;
+    cursor: pointer;
+    transform: translateZ(0); 
+}
+.main-card-wrapper:hover { z-index: 20; } 
+.card-layer {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-size: 100% 100%; background-repeat: no-repeat;
+    transition: transform 0.2s ease-out;
+    transform-style: flat; 
+}
+.card-layer-base { 
+    background-image: url('../assets/blank_c.png'); 
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4); 
+    transform-style: preserve-3d; 
+    transition: transform 0.3s ease-out;
+}
+.card-layer-top { 
+    pointer-events: none; 
+    transform: translateZ(1px); 
+}
+#import-asset {
+    background-image: url('../assets/import.png');
+    background-size: 80% auto; 
+    background-position: center 30%;
+}
