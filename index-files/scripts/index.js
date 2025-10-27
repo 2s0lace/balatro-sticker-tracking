@@ -1,4 +1,6 @@
-
+// ========================================================================
+// PLIK: index-files/scripts/index.js (FINALNA WERSJA - CZYSTA LOGIKA SPLASH SCREEN)
+// ========================================================================
  
  document.addEventListener('DOMContentLoaded', () => {
             const splashContainer = document.getElementById('splash-container'); 
@@ -12,12 +14,50 @@
             // 🔥 Zwiększony czas do 15 sekund 🔥
             const DISINTEGRATION_TIME_MS = 2500; 
             
-            mainContent.style.visibility = 'hidden'; 
+            // 🔥 LOGIKA STARTOWA: Natychmiastowe przejście, jeśli zapisano stan 'disabled' 🔥
+            const SPLASH_DISABLED = localStorage.getItem('splash_disabled') === 'true';
+            const MUSIC_DISABLED = localStorage.getItem('music_disabled') === 'true';
+            
+            if (SPLASH_DISABLED) {
+                 splashContainer.style.display = 'none';
+                 mainContent.style.visibility = 'visible';
+                 // Kontynuuj inicjalizację audio (poniżej)
+            } else {
+                 mainContent.style.visibility = 'hidden'; 
+            }
+
             plasmaVideo.volume = 0; 
             
             const SOUND_FILES = ['voice2.ogg', 'voice3.ogg', 'voice6.ogg', 'voice7.ogg'];
             let audioPool = []; 
             let jimboTextBlinkInterval = null;
+
+            // 🔥 NOWY ELEMENT AUDIO DLA MUZYKI TŁOWEJ (bg-music.mp3) 🔥
+            const bgMusic = new Audio('assets/bg-music.mp3');
+            bgMusic.volume = 0.3; 
+            bgMusic.loop = true;
+            
+            // 🔥 GLOBALNE UDOSTĘPNIENIE KONTROLI AUDIO DLA main.js 🔥
+            window.toggleBgMusic = function() {
+                if (bgMusic.paused) {
+                    // Jeśli wznawiamy, a nie jest wyłączona trwale, graj
+                    if (localStorage.getItem('music_disabled') !== 'true') {
+                         bgMusic.play().catch(e => console.error("Błąd play muzyki:", e));
+                    }
+                } else {
+                    bgMusic.pause();
+                }
+            };
+            window.isBgMusicPaused = function() {
+                return bgMusic.paused;
+            };
+            window.playRandomSound = playRandomSound; // Udostępniamy funkcję dźwięków Jokerowi Pomocnikowi
+            
+            // Jeśli SPLASH_DISABLED jest aktywne, ale muzyka nie jest trwale wyłączona, graj natychmiast
+            if (SPLASH_DISABLED && !MUSIC_DISABLED) {
+                bgMusic.play().catch(e => console.warn("Błąd play muzyki na skipie:", e));
+            }
+            // ------------------------------------------
 
             // Wstępne ładowanie i tworzenie puli obiektów Audio
             SOUND_FILES.forEach(file => {
@@ -58,23 +98,24 @@
             function playRandomSound() {
                 if (audioPool.length === 0) return;
                 
-                // 1. Pierwszy dźwięk
-                const audio1 = audioPool[Math.floor(Math.random() * audioPool.length)];
-                playSingleSound(audio1);
+                // Losuj dwa unikalne indeksy
+                const indices = [];
+                while (indices.length < 2 && indices.length < audioPool.length) {
+                    const randomIndex = Math.floor(Math.random() * audioPool.length);
+                    if (!indices.includes(randomIndex)) {
+                        indices.push(randomIndex);
+                    }
+                }
+                
+                // 1. Pierwszy dźwięk (natychmiast)
+                if (indices[0] !== undefined) {
+                    const audio1 = audioPool[indices[0]];
+                    playSingleSound(audio1);
+                }
                 
                 // 2. Drugi dźwięk (opóźniony)
-                if (audioPool.length > 1) {
-                    let index1 = audioPool.indexOf(audio1); 
-                    let index2;
-                    let audio2;
-                    
-                    // Losuj drugi indeks, dopóki nie będzie inny
-                    do {
-                        index2 = Math.floor(Math.random() * audioPool.length);
-                    } while (index2 === index1);
-                    
-                    audio2 = audioPool[index2];
-                    
+                if (indices[1] !== undefined) {
+                    const audio2 = audioPool[indices[1]];
                     // Zapobiegawcze opóźnienie
                     setTimeout(() => {
                          playSingleSound(audio2);
@@ -110,6 +151,13 @@
                 // Natychmiastowe ukrycie Jimbo i Dymku
                 splashJimbo.style.opacity = '0';
                 jimboText.style.opacity = '0';
+                
+                // MUZYKA URUCHAMIANA TUTAJ (DRUGIE KLIKNIĘCIE) 
+                if (localStorage.getItem('music_disabled') !== 'true') {
+                    bgMusic.play().catch(e => {
+                        console.warn("Błąd odtwarzania muzyki tła:", e);
+                    });
+                }
 
                 // 1. ANIMACJA ROZMYCIA I ROZJAŚNIENIA DLA WIDEO PLAZMY (3 sekundy)
                 anime({
@@ -144,20 +192,22 @@
                 // 3. Kolejne kliknięcie przenosi na stronę
                 splashJimbo.addEventListener('click', goToMainScreen);
                 
+                // Muzyka NIE jest uruchamiana tutaj!
+                
                 // Odtwarzamy pierwszy dźwięk (kluczowe do odblokowania AudioContext)
                 playSingleSound(audioPool[0]);
             }
 
             // 🔥 OBSŁUGA STARTOWA 🔥
             setTimeout(() => {
-                if (splashJimbo) {
+                if (splashJimbo && !SPLASH_DISABLED) {
                     // Jimbo jest klikalny od razu, pierwsze kliknięcie aktywuje miganie i dźwięk
                     splashJimbo.addEventListener('click', activateSite);
                 }
             }, 500);
 
             // --------------------------------------------------------------------------------------
-            // --- Logika TILT dla UI (Bez zmian) ---
+            // --- Logika TILT i PARALAKSY ---
             // --------------------------------------------------------------------------------------
             
             const logoHeader = document.querySelector('.main-header'); 
@@ -167,13 +217,55 @@
 
             // Logika obracania tła (Paralaksa)
             window.addEventListener('mousemove', (e) => {
-                const sensitivity = 5; 
-                const x = e.clientX / window.innerWidth;
-                const y = e.clientY / window.innerHeight;
-                const moveX = (x - 0.5) * sensitivity; 
-                const moveY = (y - 0.5) * sensitivity;
-                document.body.style.backgroundPosition = `calc(50% + ${moveX}px) calc(50% + ${moveY}px)`;
+                
+                // Ustawienia czułości
+                const bodySensitivity = 5; 
+                const jimboParallaxSensitivity = 1; 
+                const videoParallaxSensitivity = 3; 
+                const tiltFactor = 5;
+
+                // 1. Oblicz pozycję myszy względem centrum ekranu (-1 do 1)
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                const normalizedX = (e.clientX - centerX) / centerX;
+                const normalizedY = (e.clientY - centerY) / centerY;
+                
+                // PARALAKSA TŁA BODY (balatro-bg-gray.png)
+                const moveX = (normalizedX) * bodySensitivity; 
+                const moveY = (normalizedY) * bodySensitivity;
+                document.body.style.backgroundPosition = `calc(50% + ${moveX}px) calc(50% + ${moveY}px)`; 
+                
+                
+                if (splashContainer.style.display !== 'none') {
+                    
+                    // Przesunięcia (przeciwne do ruchu myszy, dla złudzenia głębi)
+                    const jimboOffsetX = normalizedX * jimboParallaxSensitivity * -1;
+                    const jimboOffsetY = normalizedY * jimboParallaxSensitivity * -1;
+                    const videoOffsetX = normalizedX * videoParallaxSensitivity * -1;
+                    const videoOffsetY = normalizedY * videoParallaxSensitivity * -1;
+                    
+                    // Jimbo (tilt/obrót + minimalne przesunięcie)
+                    splashJimbo.style.transform = `
+                        translate(-50%, -50%) 
+                        scale(0.4) 
+                        translateX(${jimboOffsetX}px) 
+                        translateY(${jimboOffsetY}px)
+                        rotateX(${normalizedY * tiltFactor}deg) 
+                        rotateY(${normalizedX * -tiltFactor}deg)
+                    `;
+
+                    // WIDEO (Paralaksa)
+                    plasmaVideo.style.transform = `
+                        translate(-50%, -50%)
+                        translateX(${videoOffsetX}px) 
+                        translateY(${videoOffsetY}px)
+                    `;
+                    
+                    // Dymek: pozostaje statyczny 
+                    jimboText.style.transform = `translate(-50%, -50%)`; 
+                }
             });
+            // 🔥 KONIEC LOGIKI PARALAKSY 🔥
 
             // Logika Tilt Logo
             function handleLogoTilt(e) {

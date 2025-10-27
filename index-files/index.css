@@ -14,6 +14,7 @@
     --color-link: #cccccc;
     --color-shadow: #111111;
     --app-width: 900px;
+    --background-position: center center; /* Definicja zmiennej dla tła */
 }
 
 /* 🔥 ANIMACJA PODBICIA JIMBO NA HOVERZE 🔥 */
@@ -38,11 +39,11 @@ body {
     overflow: hidden; 
     width: 100%;
     
-    background-image: url('../assets/balatro-bg-gray.png'); 
+  background-image: url('../assets/balatro-bg-gray.png'); 
     background-size: cover; 
     background-attachment: fixed; 
-    background-position: center center; 
-    background-color: #333; 
+    background-position: var(--background-position); /* Używamy zmiennej CSS */
+    background-color: #333;
     
     font-family: 'BalatroFont', sans-serif;
     color: var(--color-text);
@@ -278,4 +279,113 @@ body {
     background-image: url('../assets/import.png');
     background-size: 80% auto; 
     background-position: center 30%;
+}
+
+
+
+#joker-helper-fixed-btn {
+    /* Pozycjonowanie w prawym dolnym rogu */
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 1000; /* Zawsze na wierzchu */
+    
+    /* Wygląd */
+    display: block;
+    width: 130px; /* Szerokość karty */
+    height: auto;
+    background: none; /* Ukrywamy tło linku */
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    
+    /* Umożliwienie interakcji 3D */
+    transform-style: preserve-3d;
+    transform: translateZ(0); /* Zaczyna od 0 dla transform 3D */
+    transition: transform 0.3s ease-out, box-shadow 0.3s;
+}
+
+#joker-helper-fixed-btn:hover {
+    transform: translateZ(15px) scale(1.05); /* Lekkie wyskoczenie */
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.joker-helper-image {
+    width: 100%;
+    height: auto;
+    image-rendering: pixelated; 
+    /* Subtelny cień, aby Joker odcinał się od tła */
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.7)); 
+}
+
+#joker-helper-text-bubble {
+    position: fixed;
+    z-index: 999; /* Pod Joker Helperem */
+    
+    /* Pozycjonowanie obok przycisku */
+    right: 150px; /* Dostosuj tę wartość, aby dymek był na odpowiedniej pozycji X */
+    bottom: 50px; /* Dostosuj tę wartość, aby dymek był na odpowiedniej pozycji Y */
+    
+    /* Skalowanie (zmniejszenie do 50%) */
+    transform: scale(0.3);
+    transform-origin: bottom right; /* Skalowanie od prawego dolnego rogu */
+    
+    image-rendering: pixelated; 
+    pointer-events: none; /* Nie blokuje kliknięć */
+    
+    /* Opcjonalnie: ukrycie dymku, jeśli ma się pojawiać na hoverze */
+    /* opacity: 0; */ 
+    
+    transition: transform 0.2s ease-out;
+}
+
+#import-asset {
+    background-image: url('../assets/import.png');
+    background-size: 80% auto; 
+    background-position: center 30%;
+}
+
+/* 🔥 STYL DLA KARTY PHOTOG.PNG 🔥 */
+#photog-asset {
+    background-image: url('../assets/photog.png');
+    background-size: 80% auto; 
+    background-position: center 30%;
+}
+
+/* ... (istniejące style) ... */
+
+/* Podstawowe style dla modali */
+.modal-overlay { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background-color: rgba(26, 26, 46, 0.8); backdrop-filter: blur(3px); 
+    z-index: 2000; /* Ustaw wyższy z-index niż Joker Helper */
+    display: none;
+}
+.modal { 
+    position: fixed; z-index: 2001; background-color: #1a1a2e; border: 3px solid #5a5a8a; 
+    border-radius: 0; padding: 20px 30px; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+    color: #e0e0e0;
+}
+.close-btn { /* ... (style) ... */ }
+.filter-btn { /* ... (style) ... */ }
+
+/* ... (istniejące style) ... */
+
+#import-asset {
+    background-image: url('../assets/import.png');
+    background-size: 80% auto; 
+    background-position: center 30%;
+}
+
+#photog-asset {
+    background-image: url('../assets/photog.png');
+    background-size: 80% auto; 
+    background-position: center 30%;
+}
+
+/* 🔥 STYL DLA NOWEJ KARTY GSTAKES.PNG (1. od lewej) 🔥 */
+#gstakes-asset {
+    background-image: url('../assets/gstakes.png'); 
+    background-size: 80% auto; 
+    background-position: center center; 
 }
