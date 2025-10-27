@@ -5,6 +5,7 @@ const JOKER_DATA = {
     
     // tylko dla X 0px
             'j_joker': {name: 'Jimbo', pos: '0px 0px', rarity: 'common' },
+            'j_wee': {name: 'Wee Joker', pos: '0px 0px', rarity: 'rare', scale: 0.7 }, // wee joker
             'j_chaos': { name: 'Chaos the Clown', pos: '-142px 0px', rarity: 'common' },
             'j_jolly': { name: 'Jolly the Joker', pos: '-284px 0px', rarity: 'common' },
             'j_zany': { name: 'Zany the Joker', pos: '-426px 0px', rarity: 'common' },
