@@ -389,3 +389,10 @@ body {
     background-size: 80% auto; 
     background-position: center center; 
 }
+
+/* 🔥 STYL DLA NOWEJ KARTY osobowosc.PNG (2. od lewej) 🔥 */
+#osobowosc-asset {
+    background-image: url('../assets/osobowosc.png'); 
+    background-size: 80% auto; 
+    background-position: center center; 
+}
