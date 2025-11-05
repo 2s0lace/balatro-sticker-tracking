@@ -21,7 +21,15 @@ The interface will offer (WiP) the user 4 cards, every of which is responsible f
 
 ## To-Do list (besides WIN)
 
-- 
+Balatrool is currently in very early development. Expect frequent updates as new mechanics, visuals and UX elements are implemented. Below are planned updates and features to be added step by step:
+- Fully functional tools
+- Progress tracking
+- Tests and visual types
+- Profile management
+- Guiding on website use
+- Cohesiveness
+- Export features and summaries, additionally for Social Media
+- Export improvements
 
 ## Technology
 
