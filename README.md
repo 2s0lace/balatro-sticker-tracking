@@ -2,7 +2,8 @@
   <img src="assets/logo.png" alt="Logo projektu" width="600"/>
 </p>
 
-# Balatrool - a fanmade HUB with various Balatro-related tools. (Now in Alpha!)
+# Balatrool - a fanmade HUB with various Balatro-related tools. 
+# (Now in Alpha!)
 
 
 ## Functionality
