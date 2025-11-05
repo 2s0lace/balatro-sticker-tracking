@@ -245,7 +245,7 @@ body {
     gap: 30px;
     width: 100%;
     max-width: 800px; 
-    margin: 40px 0;
+    margin: 70px 0 40px 0;
 }
 .main-card-wrapper {
     position: relative;
@@ -396,3 +396,392 @@ body {
     background-size: 80% auto; 
     background-position: center center; 
 }
+
+#toolbox-tracker-asset {
+    background-image: url('../assets/toolbox_tracker.png');
+    background-size: 70% auto; /* dopasuj rozmiar */
+    background-position: center bottom; /* ustaw pod kartą */
+    background-repeat: no-repeat;
+    opacity: 0.95; /* delikatny blending */
+    transform: translateY(5%);
+}
+
+#toolbox-osobowosc-asset {
+    background-image: url('../assets/toolbox_personality.png');
+    background-size: 80% auto; /* dopasuj rozmiar */
+    background-position: center bottom; /* ustaw pod kartą */
+    background-repeat: no-repeat;
+    opacity: 0.95; /* delikatny blending */
+    transform: translateY(22%);
+}
+
+#toolbox-import-asset {
+    background-image: url('../assets/toolbox_import.png');
+    background-size: 90% auto; /* dopasuj rozmiar */
+    background-position: center bottom; /* ustaw pod kartą */
+    background-repeat: no-repeat;
+    opacity: 0.95; /* delikatny blending */
+    transform: translateY(10%);
+}
+
+#toolbox-photog-asset {
+    background-image: url('../assets/toolbox_jstudio.png');
+    background-size: 85% auto; /* dopasuj rozmiar */
+    background-position: center bottom; /* ustaw pod kartą */
+    background-repeat: no-repeat;
+    opacity: 0.95; /* delikatny blending */
+    transform: translateY(13%);
+}
+
+
+/* === MODAL: NO-IMPORT === */
+#no-import-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(2px);
+  transform: none !important;
+  isolation: isolate;
+  contain: layout style paint;
+  animation: fadeIn 0.4s ease-out forwards, sway 8s ease-in-out infinite;
+  opacity: 0;
+}
+
+/* Gdy aktywny */
+#no-import-modal.show {
+  display: flex;
+  animation: fadeIn 0.4s ease-out forwards, sway 8s ease-in-out infinite;
+}
+
+#no-import-modal.fade-out {
+  animation: fadeOut 0.35s ease-in forwards;
+}
+
+/* Właściwe pudełko */
+#no-import-modal .no-import-box {
+  width: min(950px, 90vw);
+  aspect-ratio: 16/10;
+  background: url('../assets/modalbox_nodata.png') center/contain no-repeat;
+  image-rendering: pixelated;
+  animation: floaty 6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* === ANIMACJE === */
+
+/* Fade in/out tła */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.97); }
+}
+
+/* Subtelne bujanie całego modala */
+@keyframes sway {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-1px) rotate(-0.15deg); }
+  50% { transform: translateY(1px) rotate(0.15deg); }
+  75% { transform: translateY(-1px) rotate(0.1deg); }
+}
+
+/* Delikatne "unoszenie" samego boxa */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+  50% { transform: translateY(-4px) rotate(-0.3deg) scale(1.005); }
+}
+
+/* === Bujanie całej sceny, wersja Basi™ === */
+
+/* Tworzymy pseudo-element, który "trzyma" scenę i nią buja */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  animation: swayScene 8s ease-in-out infinite;
+  pointer-events: none;
+  transform-origin: center center;
+}
+
+/* Cała scena (czyli zawartość) będzie się bujać przez filtr */
+body {
+  animation: swayScene 8s ease-in-out infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Globalny rytm */
+@keyframes swayScene {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-3px) rotate(-0.25deg) scale(1.002);
+  }
+  50% {
+    transform: translateY(3px) rotate(0.25deg) scale(1.002);
+  }
+  75% {
+    transform: translateY(-2px) rotate(-0.15deg) scale(1.001);
+  }
+}
+
+/* === MODAL - fade i bujanie === */
+#no-import-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+#no-import-modal.show {
+  display: flex;
+  opacity: 1;
+  animation: fadeInModal 0.4s ease-out forwards;
+}
+
+#no-import-modal.fade-out {
+  animation: fadeOutModal 0.4s ease-in forwards;
+}
+
+#no-import-modal .no-import-box {
+  width: min(950px, 90vw);
+  aspect-ratio: 16/10;
+  background: url('../assets/modalbox_nodata.png') center/contain no-repeat;
+  image-rendering: pixelated;
+  animation: floatyBox 5s ease-in-out infinite;
+}
+
+/* === 🌊 GLOBAL SMOOTH CRT & SWAY EFFECT === */
+@keyframes swayScene {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-2px) rotate(-0.2deg) scale(1.002);
+  }
+  50% {
+    transform: translateY(2px) rotate(0.2deg) scale(1.002);
+  }
+  75% {
+    transform: translateY(-1px) rotate(-0.1deg) scale(1.001);
+  }
+}
+
+/* bujanie całej sceny */
+body {
+  animation: swayScene 10s ease-in-out infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* nakładka CRT - delikatniejsza */
+#crt-overlay::before {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(18, 16, 16, 0.2) 0px,
+    rgba(18, 16, 16, 0.25) 1px,
+    transparent 2px,
+    transparent 4px
+  );
+  opacity: 0.25; /* mniej agresywne */
+}
+
+/* lekki "bloom" jak w CRT */
+#crt-overlay::after {
+  box-shadow:
+    inset 0 0 80px rgba(0, 0, 0, 0.4),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
+  filter: contrast(1.02) brightness(1.03);
+}
+
+/* === RETRO SAVE MODAL === */
+#save-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+
+  display: none; /* ⛔ ukryty dopóki nie klikniesz Import */
+  justify-content: center;
+  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+
+  background: rgba(0, 0, 0, 0.5);
+  font-family: 'BalatroFont', sans-serif;
+  color: #a8c4ff;
+}
+
+
+/* tło modala */
+.modal-content {
+  position: relative;
+  width: min(700px, 90vw);
+  aspect-ratio: 16 / 10;
+  background: url('../assets/modalbox.png') center/contain no-repeat;
+  image-rendering: pixelated;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+  padding: 20px 30px;
+}
+
+/* tekst */
+.modal-text {
+  font-size: 1rem;
+  text-shadow: 1px 1px 0 #000;
+  margin-top: 10%;
+  line-height: 1.4;
+}
+
+/* pole tekstowe */
+.save-input {
+  width: 80%;
+  height: 160px;
+  resize: none;
+  border: none;
+  outline: none;
+  background: #ffffff;
+  color: #333;
+  font-family: 'BalatroFont', sans-serif;
+  font-size: 1rem;
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 3px #b7b7b7;
+  image-rendering: pixelated;
+}
+
+/* przycisk OK */
+.modal-ok {
+  width: 110px;
+  height: 50px;
+  background: url('../assets/ok-button.png') center/contain no-repeat;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+  image-rendering: pixelated;
+}
+
+/* kliknięcie daje wrażenie "press" */
+.modal-ok:active {
+  transform: translateY(2px);
+  filter: brightness(0.9);
+}
+
+#no-data-banner {
+  position: absolute;
+  top: 220px;
+  left: 50%;
+  transform: translateX(-100%);
+  z-index: 10;
+  display: flex;
+  flex-direction: row; /* 🔥 kluczowe — poziomo, nie pionowo */
+  align-items: center;
+  gap: 12px; /* odstęp między grafikami */
+}
+
+#no-data-banner img {
+  image-rendering: pixelated;
+  height: auto;
+  width: auto;
+}
+
+/* Data.png / NoData.png */
+#data-status-img {
+  height: 70px;
+  z-index: 11;
+}
+
+/* Ooptions — zawsze obok po prawej */
+#data-tip-img {
+  height: 90px;
+  z-index: 10;
+  position: relative;
+  top: 5px; /* lekko wyrównane do środka */
+}
+
+#data-tip-img {
+  display: block !important;
+  opacity: 1 !important;
+  height: 100px !important;
+  border: 1px solid lime; /* tylko do testu, potem usuń */
+}
+
+#options-banner {
+  position: absolute;
+  top: 230px; /* 🔽 wysokość nad kartami, dopasuj */
+  left: 50%;
+  transform: translateX(10%);
+  z-index: 20;
+  display: block;
+}
+
+#options-banner img {
+  width: auto;
+  height: 180px;
+  image-rendering: pixelated;
+}
+
+
+.toast {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%) scale(0.9);
+  background-color: #111;
+  color: #80ff80;
+  border: 2px solid #00ff00;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-family: "Press Start 2P", monospace;
+  font-size: 12px;
+  text-shadow: 0 0 6px #00ff00;
+  letter-spacing: 1px;
+  opacity: 0;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  image-rendering: pixelated;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+  animation: toast-pop 0.4s ease, toast-hide 0.4s ease 2.2s forwards;
+}
+
+.toast.error {
+  color: #ff8080;
+  border-color: #ff0000;
+  text-shadow: 0 0 6px #ff4040;
+}
+
+@keyframes toast-pop {
+  from { transform: translateX(-50%) scale(0.7); opacity: 0; }
+  to   { transform: translateX(-50%) scale(1); opacity: 1; }
+}
+
+@keyframes toast-hide {
+  to { transform: translateX(-50%) scale(0.8); opacity: 0; }
+}
+

@@ -10,7 +10,9 @@
 
 </head>
 <body>
+<div class="global-sway-wrapper">
 
+</div>
     <div id="splash-container">
         <video id="plasma-video" autoplay loop muted playsinline>
             <source src="assets/plasma-bg.mp4" type="video/mp4">
@@ -34,24 +36,39 @@
             <span class="version-tag">1.0 Alpha</span>
         </header>
 
+        <div id="no-data-banner">
+  <img src="assets/nodata.png" alt="No data">
+</div>
+
+<div id="options-banner">
+  <img src="assets/ooptions.png" alt="Options" />
+</div>
+
+
         <main class="card-grid">
             
-           <div class="main-card-wrapper" data-card-type="placeholder-3">
+           <div class="main-card-wrapper" id="gstakes-card" data-card-type="placeholder-3">
             <div class="card-layer card-layer-base"></div>
-            <div class="card-layer card-layer-top" id="gstakes-asset"></div> </div>
+            <div class="card-layer card-layer-top" id="gstakes-asset"></div> 
+            <div class="card-layer card-layer-toolbox" id="toolbox-tracker-asset"></div>
+        </div>
+            
             
             <div class="main-card-wrapper" data-card-type="placeholder-3">
             <div class="card-layer card-layer-base"></div>
-            <div class="card-layer card-layer-top" id="osobowosc-asset"></div> </div>
+            <div class="card-layer card-layer-top" id="osobowosc-asset"></div> 
+        <div class="card-layer card-layer-toolbox" id="toolbox-osobowosc-asset"></div></div>
             
             <div class="main-card-wrapper" id="import-card-wrapper" data-card-type="import">
                 <div class="card-layer card-layer-base"></div>
                 <div class="card-layer card-layer-top" id="import-asset"></div>
+                <div class="card-layer card-layer-toolbox" id="toolbox-import-asset"></div>
             </div>
             
             <div class="main-card-wrapper" data-card-type="placeholder-3">
             <div class="card-layer card-layer-base"></div>
-            <div class="card-layer card-layer-top" id="photog-asset"></div> </div>
+            <div class="card-layer card-layer-top" id="photog-asset"></div>
+            <div class="card-layer card-layer-toolbox" id="toolbox-photog-asset"></div> </div>
             </div>
 
         </main>
@@ -86,10 +103,38 @@
 <button class="settings-btn" id="return-to-splash-btn">Powrót do Menu Startowego</button>
                 </button>
             </div>
+        </div>
+
+            
 
     <input type="file" id="hidden-save-importer" accept=".json" style="display: none;">
+
+    <div id="no-import-modal" aria-hidden="true">
+  <div class="no-import-box" role="img" aria-label="No data modal"></div>
+</div>
+</div>
+
+<div id="save-modal">
+  <div class="modal-content">
+    <p class="modal-text">
+      Paste your save data here. If you don't know how,<br>
+      please check the Guide.
+    </p>
+
+    <textarea id="save-input" placeholder="Start typing..."></textarea>
+
+    <button class="modal-ok"></button>
+  </div>
+</div>
+
+<div id="toast" class="toast">IMPORT SUCCESSFUL</div>
+
     
-    <script src="index-files/scripts/index.js"></script>
+    <script src="index-files/scripts/index.js" defer></script>
+    <script src="index-files/scripts/modal-i.js" defer></script>
+    <script src="index-files/scripts/toast-i.js" defer></script>
+    
+    
 
 </body>
 </html>

@@ -3,6 +3,11 @@
 // ========================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    const _modalFix = document.getElementById('no-import-modal');
+if (_modalFix && _modalFix.parentElement?.id === 'settings-modal-overlay') {
+  document.body.appendChild(_modalFix);
+}
     // --- ZMIENNE GŁÓWNE ---
     const splashContainer = document.getElementById('splash-container');
     const plasmaVideo = document.getElementById('plasma-video');
@@ -240,4 +245,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.reload();
         });
     }
-});
+
+
+  });
