@@ -28,4 +28,4 @@ The interface will offer (WiP) the user 4 cards, every of which is responsible f
 
 ## My Graphic Portfolio
 
-![Instagram](https://www.instagram.com/2s0lace)
+[Instagram](https://www.instagram.com/2s0lace)
