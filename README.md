@@ -3,7 +3,7 @@
 </p>
 
 # Balatrool - a fanmade HUB with various Balatro-related tools. 
-# (Now in Alpha!)
+# Still in very early development!
 
 
 ## Functionality
